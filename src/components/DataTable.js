@@ -82,15 +82,6 @@ class DataTable extends Component {
     }
 
     // RETURNING THE TABLE ONLY IF WE HAVE THE RESULTS
-    console.group('THIS.STATE');
-
-    console.log(this.state.areFieldsEmpty + ' -- arefieldsempty from state ');
-    console.log(this.state.arrayOfDuplicates);
-    console.log(' arrayOfDuplicates from state ');
-    console.log(
-      this.state.wrongFormatNumber + ' wrongformatnumber from state '
-    );
-    console.groupEnd();
     if (result.length > 0 && !this.state.areFieldsEmpty) {
       return (
         <>
