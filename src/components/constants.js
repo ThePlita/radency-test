@@ -1,0 +1,10 @@
+export const FULLNAME = 0;
+export const PHONE = 1;
+export const EMAIL = 2;
+export const AGE = 3;
+export const EXPERIENCE = 4;
+export const YEARLY_INCOME = 5;
+export const HAS_CHILDREN = 6;
+export const LICENSE_STATES = 7;
+export const EXPIRATION_DATE = 8;
+export const LICENSE_NUMBER = 9;
