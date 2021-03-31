@@ -37,7 +37,6 @@ export default class Parser extends Component {
           onError={this.handleOnError}
           noClick
           noDrag
-          isReset={true}
         >
           {({ file }) => (
             <aside

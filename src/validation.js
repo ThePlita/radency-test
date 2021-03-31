@@ -163,24 +163,38 @@ export const checkRequiredFields = () => {
   const phoneElements = document.getElementsByClassName('phone');
   const emailElements = document.getElementsByClassName('email');
   const table = document.getElementById('table');
+  //   console.group('dom elements on null');
+  //   console.log(nameElements);
+  //   console.log(phoneElements);
+  //   console.log(emailElements);
+  //   console.groupEnd();
 
-  for (let tag of nameElements) {
-    if (tag.outerText === '') {
-      table.style.display = 'none';
-      return true;
+  if (
+    nameElements.length > 0 ||
+    phoneElements.length > 0 ||
+    emailElements.length > 0
+  ) {
+    for (let tag of nameElements) {
+      if (tag.outerText === '') {
+        table.style.display = 'none';
+        return true;
+      }
+    }
+    for (let tag of phoneElements) {
+      if (tag.outerText === '') {
+        table.style.display = 'none';
+        return true;
+      }
+    }
+    for (let tag of emailElements) {
+      if (tag.outerText === '') {
+        table.style.display = 'none';
+        return true;
+      }
     }
   }
-  for (let tag of phoneElements) {
-    if (tag.outerText === '') {
-      table.style.display = 'none';
-      return true;
-    }
-  }
-  for (let tag of emailElements) {
-    if (tag.outerText === '') {
-      table.style.display = 'none';
-      return true;
-    }
+  if (table) {
+    table.style.display = 'table';
   }
   return false;
 };

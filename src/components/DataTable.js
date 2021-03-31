@@ -27,6 +27,7 @@ import {
 import Alert from './Alert';
 import HasDuplicates from './HasDuplicates';
 import LicenseStates from './LicenseStates';
+import equal from 'fast-deep-equal/react';
 
 class DataTable extends Component {
   constructor(props) {
@@ -34,41 +35,35 @@ class DataTable extends Component {
     this.state = {
       areFieldsEmpty: false,
       arrayOfDuplicates: [],
-      wrongFormatNumber: 1
+      wrongFormatNumber: 0
     };
   }
 
-  componentDidMount() {
-    this.setState({
-      areFieldsEmpty: checkRequiredFields(),
-      arrayOfDuplicates: checkEmailAndPhoneDuplicates(),
-      wrongFormatNumber: document.getElementsByClassName('invalid').length
-    });
-  }
   componentDidUpdate(prevProps, prevState) {
     if (
-      prevState.wrongFormatNumber !==
-        document.getElementsByClassName('invalid').length ||
-      prevState.areFieldsEmpty !== checkRequiredFields()
-    )
+      this.state.areFieldsEmpty === false &&
+      this.state.arrayOfDuplicates.length === 0 &&
+      this.state.wrongFormatNumber === 0
+    ) {
       this.setState({
+        wrongFormatNumber: document.getElementsByClassName('invalid').length,
         areFieldsEmpty: checkRequiredFields(),
-        arrayOfDuplicates: checkEmailAndPhoneDuplicates(),
-        wrongFormatNumber: document.getElementsByClassName('invalid').length
+        arrayOfDuplicates: checkEmailAndPhoneDuplicates()
       });
+    }
+
+    const objectComparisonArray = prevProps.result.map((item, index) =>
+      equal(item, this.props.result[index]) ? 'true' : 'false'
+    );
+    if (objectComparisonArray.includes('false')) {
+      this.setState({
+        wrongFormatNumber: document.getElementsByClassName('invalid').length,
+        areFieldsEmpty: checkRequiredFields(),
+        arrayOfDuplicates: checkEmailAndPhoneDuplicates()
+      });
+    }
   }
 
-  shouldComponentUpdate(nextProps, nextState) {
-    if (
-      nextState.wrongFormatNumber !==
-        document.getElementsByClassName('invalid').length ||
-      nextState.areFieldsEmpty !== checkRequiredFields() ||
-      nextState.arrayOfDuplicates !== checkEmailAndPhoneDuplicates()
-    ) {
-      return true;
-    }
-    return false;
-  }
   render() {
     // DESTRUCTURING
     const { result } = this.props;
@@ -87,7 +82,15 @@ class DataTable extends Component {
     }
 
     // RETURNING THE TABLE ONLY IF WE HAVE THE RESULTS
-    console.log(this.state.areFieldsEmpty + ' arefieldsempty from state');
+    console.group('THIS.STATE');
+
+    console.log(this.state.areFieldsEmpty + ' -- arefieldsempty from state ');
+    console.log(this.state.arrayOfDuplicates);
+    console.log(' arrayOfDuplicates from state ');
+    console.log(
+      this.state.wrongFormatNumber + ' wrongformatnumber from state '
+    );
+    console.groupEnd();
     if (result.length > 0 && !this.state.areFieldsEmpty) {
       return (
         <>
@@ -197,11 +200,15 @@ class DataTable extends Component {
               })}
             </tbody>
           </table>
-          {this.state.wrongFormatNumber > 0 ? <Alert /> : null}
+          {this.state.wrongFormatNumber > 0 ? (
+            <Alert text="File formatting is incorrect. Please double-check the highlighted fields and/or duplicates" />
+          ) : null}
         </>
       );
     } else if (this.state.areFieldsEmpty) {
-      return <Alert />;
+      return (
+        <Alert text="The file's format is incorrect. Name, phone or email field are missing. Please try again." />
+      );
     } else {
       return <></>;
     }
