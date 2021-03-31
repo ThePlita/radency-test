@@ -20,12 +20,7 @@ export default class Parser extends Component {
   };
 
   handleOnFileLoad = data => {
-    // console.log('DATA: ' + JSON.stringify(data));
     this.setState({ csv: data });
-  };
-
-  handleOnError = (err, file, inputElem, reason) => {
-    console.log(err);
   };
 
   render() {

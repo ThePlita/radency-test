@@ -163,11 +163,6 @@ export const checkRequiredFields = () => {
   const phoneElements = document.getElementsByClassName('phone');
   const emailElements = document.getElementsByClassName('email');
   const table = document.getElementById('table');
-  //   console.group('dom elements on null');
-  //   console.log(nameElements);
-  //   console.log(phoneElements);
-  //   console.log(emailElements);
-  //   console.groupEnd();
 
   if (
     nameElements.length > 0 ||
